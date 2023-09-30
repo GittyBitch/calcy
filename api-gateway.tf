@@ -1,11 +1,12 @@
 resource "aws_apigatewayv2_api" "http_api" {
+  depends_on	= [aws_s3_bucket.my_bucket]
   name          = "my-http-api"
   protocol_type = "HTTP"
 
   cors_configuration {
     allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
     allow_methods = ["GET", "POST", "OPTIONS"]
-    allow_origins = ["*"] # FIXME
+    allow_origins = ["http://${aws_s3_bucket_website_configuration.my_website.website_endpoint}"] # FIXME 
     max_age       = 300
   }
 }

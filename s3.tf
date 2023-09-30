@@ -44,7 +44,6 @@ resource "aws_s3_bucket_policy" "my_bucket_policy" {
 EOF
 }
 
-# FIXME: no auto update currently
 resource "aws_s3_object" "html_files" {
   for_each = fileset("${path.module}/html/", "*") 
   depends_on = [null_resource.test_endpoint]
@@ -57,6 +56,7 @@ resource "aws_s3_object" "html_files" {
 
 output "website_url" {
 # FIXME
-  value = "http://${aws_s3_bucket.my_bucket.bucket}.s3-website.eu-central-1.amazonaws.com/"
+# depends_on = endpoint
+  value = "http://${aws_s3_bucket_website_configuration.my_website.website_endpoint}"
   description = "The URL of the hosted website"
 }

@@ -42,7 +42,7 @@ resource "null_resource" "lambda_sam_local" {
 */
 
 
-
+# TODO: https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file
 resource "null_resource" "zip_lambda" {
   depends_on = [null_resource.validate_python3,/*null_resource.lambda_sam_local*/]
   provisioner "local-exec" {
