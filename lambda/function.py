@@ -13,11 +13,16 @@ def lambda_handler(event, context):
     operation = requestBody.get('operation','add')
     
     ergebnis = 0
+    status=200
     match operation:
         case 'add':
             ergebnis = x + y
         case 'subtract':
             ergebnis = x -y 
+        case 'pow':
+            ergebnis = x**y
+        case 'mod':
+            ergebnis = x%y
         case 'multiply':
             ergebnis = x * y
         case 'divide':
@@ -25,8 +30,11 @@ def lambda_handler(event, context):
                 ergebnis = "Division by Zero"
             else:
                 ergebnis = x / y
+        case _:
+            ergebnis ="Unsupported operation:"+operation
+            status=501
     return {
-        'statusCode': 200,
+        'statusCode': status,
         'body': json.dumps(ergebnis)
     }
 
