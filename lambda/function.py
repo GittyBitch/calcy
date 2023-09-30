@@ -34,6 +34,7 @@ def lambda_handler(event, context):
         case _:
             result ="Unsupported operation:"+operation
             status=501
+
     return {
         'statusCode': status,
         'body': json.dumps(result)

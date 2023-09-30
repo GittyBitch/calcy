@@ -73,7 +73,8 @@ resource "null_resource" "test_lambda" {
     command = "bash test_lambda.sh"
   } 
 triggers = {
-    always_run = "${timestamp()}"
+  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  #  always_run = "${timestamp()}"
   }
 }
 
