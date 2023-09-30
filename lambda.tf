@@ -52,7 +52,7 @@ resource "null_resource" "zip_lambda" {
   }
 
   triggers = {
-    file_exists = fileexists("lambda_function_payload.zip") ? "true" : "false"
+    file_exists = fileexists("lambda_function_payload.zip")
     file_sha256 = filesha256("lambda/function.py")
   }
 
@@ -65,7 +65,7 @@ resource "aws_lambda_function" "my_lambda" {
   runtime       = "python3.11"
   role          = aws_iam_role.lambda_role.arn
   filename      = "lambda_function_payload.zip"
-  source_code_hash = filebase64sha256("lambda/function.py")
+  source_code_hash = filesha256("lambda/function.py")
 }
 
 resource "null_resource" "test_lambda" {
@@ -76,7 +76,7 @@ resource "null_resource" "test_lambda" {
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
   triggers = {
-    source_code_hash = filebase64sha256("lambda_function_payload.zip")
+    source_code_hash = filesha256("lambda/function.py")
     #  always_run = "${timestamp()}"
   }
 }
@@ -89,7 +89,8 @@ resource "null_resource" "check_response" {
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
   triggers = {
-    always_run = "${timestamp()}"
+    file_sha256 = filesha256("response.json")
+    #always_run = "${timestamp()}"
   }
 }
 

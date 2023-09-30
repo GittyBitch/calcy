@@ -45,6 +45,6 @@ fetch(url, {
     }
     return response.json();
   })
-  .then(data => {document.getElementById('Ergebnis').innerHTML="="+data;}) 
+  .then(data => {document.getElementById('Ergebnis').innerHTML="= "+data;}) 
   .catch(error => {document.getElementById('errors').innerHTML=error+"&#128530;";});
 }

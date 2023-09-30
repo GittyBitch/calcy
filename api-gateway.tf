@@ -54,7 +54,9 @@ resource "null_resource" "test_endpoint" { # patch
   } # TODO: fail
 
   triggers = {
-    always_run = "${timestamp()}"
+    #file_sha256 = filesha256("lambda/function.py")
+    api_gateway_id = "${aws_apigatewayv2_api.http_api.id}"
+    #always_run = "${timestamp()}"
   }
 }
 
