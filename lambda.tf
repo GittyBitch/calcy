@@ -20,6 +20,7 @@ EOF
 resource "null_resource" "validate_python3" {
   provisioner "local-exec" {
     command = "python3 -m py_compile lambda/function.py"
+    on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
   triggers = {
@@ -47,6 +48,7 @@ resource "null_resource" "zip_lambda" {
   depends_on = [null_resource.validate_python3, /*null_resource.lambda_sam_local*/]
   provisioner "local-exec" {
     command = "zip -j lambda_function_payload.zip lambda/function.py"
+    on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
   triggers = {
@@ -63,7 +65,7 @@ resource "aws_lambda_function" "my_lambda" {
   runtime       = "python3.11"
   role          = aws_iam_role.lambda_role.arn
   filename      = "lambda_function_payload.zip"
-  #source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  source_code_hash = filebase64sha256("lambda/function.py")
 }
 
 resource "null_resource" "test_lambda" {
@@ -71,6 +73,7 @@ resource "null_resource" "test_lambda" {
 
   provisioner "local-exec" {
     command = "bash test_lambda.sh"
+    on_failure  = fail # Fail if the command returns a non-zero exit code
   }
   triggers = {
     source_code_hash = filebase64sha256("lambda_function_payload.zip")
@@ -83,6 +86,7 @@ resource "null_resource" "check_response" {
 
   provisioner "local-exec" {
     command = "jq '.body == \"330\"' response.json"
+    on_failure  = fail # Fail if the command returns a non-zero exit code
   }
   triggers = {
     always_run = "${timestamp()}"

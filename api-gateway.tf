@@ -51,7 +51,7 @@ resource "null_resource" "test_endpoint" { # patch
   depends_on = [aws_apigatewayv2_stage.example_stage]
   provisioner "local-exec" {
     command = "bash test_api_gateway.sh ${aws_apigatewayv2_api.http_api.api_endpoint}"
-  }
+  } # TODO: fail
 
   triggers = {
     always_run = "${timestamp()}"
