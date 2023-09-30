@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "http_api" {
-  depends_on	= [aws_s3_bucket.my_bucket]
+  depends_on    = [aws_s3_bucket.my_bucket]
   name          = "my-http-api"
   protocol_type = "HTTP"
 
@@ -18,10 +18,10 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 }
 
 resource "aws_lambda_permission" "invoke" {
-  statement_id   = "AllowAPIGatewayInvoke"
-  action         = "lambda:InvokeFunction"
-  function_name  = aws_lambda_function.my_lambda.arn
-  principal      = "apigateway.amazonaws.com"
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.my_lambda.arn
+  principal     = "apigateway.amazonaws.com"
 }
 
 resource "aws_apigatewayv2_route" "example_route" {
@@ -41,9 +41,9 @@ resource "aws_apigatewayv2_deployment" "example_deployment" {
 }
 
 resource "aws_apigatewayv2_stage" "example_stage" {
-  api_id      = aws_apigatewayv2_api.http_api.id
+  api_id        = aws_apigatewayv2_api.http_api.id
   auto_deploy   = false
-  name        = "$default"
+  name          = "$default"
   deployment_id = aws_apigatewayv2_deployment.example_deployment.id
 }
 
@@ -60,6 +60,6 @@ resource "null_resource" "test_endpoint" { # patch
 
 
 output "http_api_url" {
-  value = "${aws_apigatewayv2_api.http_api.api_endpoint}"
+  value = aws_apigatewayv2_api.http_api.api_endpoint
 }
 

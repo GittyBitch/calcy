@@ -12,25 +12,25 @@ resource "aws_s3_bucket" "my_bucket" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration
 resource "aws_s3_bucket_website_configuration" "my_website" {
   bucket = "calcy-${random_id.bucket_id.hex}"
-    index_document { 
-	suffix="index.html" 
-}
+  index_document {
+    suffix = "index.html"
+  }
 
 }
 
 resource "aws_s3_bucket_public_access_block" "my_public_access_block" {
-  bucket = aws_s3_bucket.my_bucket.bucket
-  depends_on = [aws_s3_bucket.my_bucket]
-  block_public_acls   = false
-  block_public_policy = false
-  ignore_public_acls  = false
+  bucket                  = aws_s3_bucket.my_bucket.bucket
+  depends_on              = [aws_s3_bucket.my_bucket]
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
   restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_policy" "my_bucket_policy" {
-  bucket = aws_s3_bucket.my_bucket.bucket
+  bucket     = aws_s3_bucket.my_bucket.bucket
   depends_on = [aws_s3_bucket_public_access_block.my_public_access_block]
-  policy = <<EOF
+  policy     = <<EOF
 {
   "Version":"2012-10-17",
   "Statement":[{
@@ -45,18 +45,18 @@ EOF
 }
 
 resource "aws_s3_object" "html_files" {
-  for_each = fileset("${path.module}/html/", "*") 
-  depends_on = [null_resource.test_endpoint]
-  bucket = aws_s3_bucket.my_bucket.bucket
-  key    = each.value
-  source = "${path.module}/html/${each.value}"
+  for_each     = fileset("${path.module}/html/", "*")
+  depends_on   = [null_resource.test_endpoint]
+  bucket       = aws_s3_bucket.my_bucket.bucket
+  key          = each.value
+  source       = "${path.module}/html/${each.value}"
   content_type = "text/html"
   etag         = filemd5("${path.module}/html/${each.value}")
 }
 
 output "website_url" {
-# FIXME
-# depends_on = endpoint
-  value = "http://${aws_s3_bucket_website_configuration.my_website.website_endpoint}"
+  # FIXME
+  # depends_on = endpoint
+  value       = "http://${aws_s3_bucket_website_configuration.my_website.website_endpoint}"
   description = "The URL of the hosted website"
 }

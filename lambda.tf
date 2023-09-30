@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_role" {
-  name = "lambda_role"
+  name               = "lambda_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -44,12 +44,12 @@ resource "null_resource" "lambda_sam_local" {
 
 # TODO: https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file
 resource "null_resource" "zip_lambda" {
-  depends_on = [null_resource.validate_python3,/*null_resource.lambda_sam_local*/]
+  depends_on = [null_resource.validate_python3, /*null_resource.lambda_sam_local*/]
   provisioner "local-exec" {
     command = "zip -j lambda_function_payload.zip lambda/function.py"
   }
 
- triggers = {
+  triggers = {
     file_exists = fileexists("lambda_function_payload.zip") ? "true" : "false"
     file_sha256 = filesha256("lambda/function.py")
   }
@@ -58,11 +58,11 @@ resource "null_resource" "zip_lambda" {
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "calculator_lambda"
-  depends_on	= [null_resource.zip_lambda]
+  depends_on    = [null_resource.zip_lambda]
   handler       = "function.lambda_handler"
-  runtime       = "python3.11" 
+  runtime       = "python3.11"
   role          = aws_iam_role.lambda_role.arn
-  filename         = "lambda_function_payload.zip"
+  filename      = "lambda_function_payload.zip"
   #source_code_hash = filebase64sha256("lambda_function_payload.zip")
 }
 
@@ -71,10 +71,10 @@ resource "null_resource" "test_lambda" {
 
   provisioner "local-exec" {
     command = "bash test_lambda.sh"
-  } 
-triggers = {
-  source_code_hash = filebase64sha256("lambda_function_payload.zip")
-  #  always_run = "${timestamp()}"
+  }
+  triggers = {
+    source_code_hash = filebase64sha256("lambda_function_payload.zip")
+    #  always_run = "${timestamp()}"
   }
 }
 
@@ -83,8 +83,8 @@ resource "null_resource" "check_response" {
 
   provisioner "local-exec" {
     command = "jq '.body == \"330\"' response.json"
-  } 
-triggers = {
+  }
+  triggers = {
     always_run = "${timestamp()}"
   }
 }
