@@ -43,6 +43,7 @@ resource "aws_s3_bucket_policy" "my_bucket_policy" {
 EOF
 }
 
+# FIXME: no auto update currently
 resource "aws_s3_object" "html_files" {
   for_each = fileset("${path.module}/html/", "*") 
   depends_on = [null_resource.test_endpoint]

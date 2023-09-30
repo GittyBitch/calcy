@@ -3,15 +3,6 @@ window.onload = function() {
 //alert("Working");
 console.log("AWS Taschenrechner geladen!")
 
-// Profile für Lambda Funcs
-/*
-config = [
-{name: "Boris", value:"https://9vr1h31s14.execute-api.eu-central-1.amazonaws.com/default/calcuply", key1:'x',key2:'y'},
-
-{name: "Benny", value:"https://buk7qq6u09.execute-api.eu-central-1.amazoname.com/default/taschenrechner",key1:"p_1",key2:"p_2"}
-];
-*/
-
 var select = document.getElementById('endpoint');
 
 config.forEach(function(item) {
@@ -56,5 +47,4 @@ fetch(url, {
   })
   .then(data => {document.getElementById('Ergebnis').innerHTML=data;}) 
   .catch(error => {document.getElementById('errors').innerHTML=error;});
-
 }

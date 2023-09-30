@@ -28,10 +28,23 @@ resource "null_resource" "validate_python3" {
 
 }
 
+/*
+resource "null_resource" "lambda_sam_local" {
+  provisioner "local-exec" {
+    command = "sam local invoke calculator_lambda -e test_payload.json"
+  }
+
+  triggers = {
+    python_file_hash = filesha256("lambda/function.py")
+  }
+
+}
+*/
+
 
 
 resource "null_resource" "zip_lambda" {
-  depends_on = [null_resource.validate_python3]
+  depends_on = [null_resource.validate_python3,/*null_resource.lambda_sam_local*/]
   provisioner "local-exec" {
     command = "zip -j lambda_function_payload.zip lambda/function.py"
   }

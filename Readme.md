@@ -7,6 +7,11 @@ https://repost.aws/knowledge-center/s3-access-denied-bucket-policy
 
 aws cli (einloggen)
 
+SAM:
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-invoke.html
+
+
 terraform plan
 terraform validate
 terraform apply
