@@ -1,0 +1,37 @@
+<html><head>
+<style>
+.error {
+    color: red;
+  }
+</style>
+<script type="text/javascript" src="code.js">
+</script>
+
+<script type="text/javascript" src="data.js">
+</script>
+
+</head><body>
+<h3>
+Freaky Friday 29.09.2023: AWS Taschenrechner Demo
+</h3>
+Idee: wir f&uuml;hren eine aws Lambda-Funktion &uuml;ber einen API Gateway aus 
+<form onsubmit="return false;">
+<input type="input" id="x" name="x" value="10"/>
+
+<select id="operator" name="operator">
+    <option value="add">+</option>
+    <option value="subtract">-</option>
+    <option value="multiply" selected>x</option>
+    <option value="divide">/</option>
+</select>
+
+<input type="input" id="y" name="y" value="33"/>
+<input type="submit" value="berechnen" onClick="shoot();"/>
+<p/><p/><p/><p/>
+AWS API Gateway:
+<select id="endpoint" ></select>
+</form>
+<h2>
+	<div class="error" id="errors"></div>
+	<div id="Ergebnis"></div>
+</h2></body></html>
