@@ -23,8 +23,9 @@ resource "null_resource" "validate_python3" {
   }
 
   triggers = {
-    always_run = "${timestamp()}"
+    python_file_hash = filesha256("lambda/function.py")
   }
+
 }
 
 
@@ -35,9 +36,11 @@ resource "null_resource" "zip_lambda" {
     command = "zip -j lambda_function_payload.zip lambda/function.py"
   }
 
-  triggers = {
-    always_run = "${timestamp()}"
+ triggers = {
+    file_exists = fileexists("lambda_function_payload.zip") ? "true" : "false"
+    file_sha256 = filesha256("lambda/function.py")
   }
+
 }
 
 resource "aws_lambda_function" "my_lambda" {
@@ -47,7 +50,7 @@ resource "aws_lambda_function" "my_lambda" {
   runtime       = "python3.11" 
   role          = aws_iam_role.lambda_role.arn
   filename         = "lambda_function_payload.zip"
-  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  #source_code_hash = filebase64sha256("lambda_function_payload.zip")
 }
 
 resource "null_resource" "test_lambda" {

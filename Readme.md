@@ -1,4 +1,6 @@
 
+- auto update on html change
+
 https://repost.aws/knowledge-center/s3-access-denied-bucket-policy
 
 - index.html: click, reset result

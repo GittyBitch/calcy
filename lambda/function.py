@@ -1,5 +1,6 @@
 import json
 
+# new entry point
 def lambda_handler(event, context):
     body = event.get('body')
     if body:
