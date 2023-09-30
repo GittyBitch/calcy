@@ -1,6 +1,6 @@
 import json
 
-# new entry point
+# entry point
 def lambda_handler(event, context):
     body = event.get('body')
     if body:
@@ -13,29 +13,29 @@ def lambda_handler(event, context):
     
     operation = requestBody.get('operation','add')
     
-    ergebnis = 0
+    result = 0
     status=200
     match operation:
         case 'add':
-            ergebnis = x + y
+            result = x + y
         case 'subtract':
-            ergebnis = x -y 
+            result = x -y 
         case 'pow':
-            ergebnis = x**y
+            result = x**y
         case 'mod':
-            ergebnis = x%y
+            result = x%y
         case 'multiply':
-            ergebnis = x * y
+            result = x * y
         case 'divide':
             if (y == 0): 
-                ergebnis = "Division by Zero"
+                result = "Division by Zero"
             else:
-                ergebnis = x / y
+                result = x / y
         case _:
-            ergebnis ="Unsupported operation:"+operation
+            result ="Unsupported operation:"+operation
             status=501
     return {
         'statusCode': status,
-        'body': json.dumps(ergebnis)
+        'body': json.dumps(result)
     }
 

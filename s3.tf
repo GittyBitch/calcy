@@ -9,6 +9,7 @@ resource "aws_s3_bucket" "my_bucket" {
 
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration
 resource "aws_s3_bucket_website_configuration" "my_website" {
   bucket = "calcy-${random_id.bucket_id.hex}"
     index_document { 
