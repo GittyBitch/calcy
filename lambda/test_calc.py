@@ -31,7 +31,7 @@ def calculate(operation, x, y):
     return [result, status]
 
 
-class TestAddition(unittest.TestCase):
+class TestOperation(unittest.TestCase):
     def test_addition(self):
         self.assertEqual(calculate ("add", 2, 3), [5,HTTP_OK])
     def test_subtract(self):
@@ -46,7 +46,7 @@ class TestAddition(unittest.TestCase):
         self.assertEqual(calculate ("mod", 10, 3), [1,200])
     def test_pow(self):
         self.assertEqual(calculate ("pow", 5, 5), [3125,HTTP_OK])
-    def test_unimplemented(self):
+    def test_unimplemented_operation(self):
         self.assertEqual(calculate (FAKE, 5, 5), [UNSUPPORTED+FAKE,HTTP_ERROR] )
     
 

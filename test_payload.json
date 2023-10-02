@@ -1,6 +1,7 @@
 {
     "x": "10",
     "y": "33",
-    "operation": "multiply"
+    "operation": "multiply",
+    "format":"DEC"
 }
 

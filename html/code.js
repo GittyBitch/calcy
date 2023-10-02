@@ -11,7 +11,26 @@ config.forEach(function(item) {
     option.text = item.name;
     select.appendChild(option);    
 });
+
+formats = [
+	
+	{name:'DEC', value:'DEC'},
+	{name:'HEX', value:'HEX'},
+	{name:'BIN', value:'BIN'},
+	{name:'OCT', value:'OCT'}
+
+];
+
+var format_picker = document.getElementById('format');
+formats.forEach(function(item) {
+    var option = document.createElement('option');
+    option.value = item.value;
+    option.text = item.name;
+    format_picker.appendChild(option);    
+});
 }
+
+
 
 function shoot() {
 document.getElementById('Ergebnis').innerHTML="";
@@ -27,7 +46,8 @@ console.log("shooting request @aws lambda: "+url)
 const data = {
   x: document.getElementById('x').value,
   y: document.getElementById('y').value,
-  operation: document.getElementById('operator').value
+  operation: document.getElementById('operator').value,
+  format: document.getElementById('format').value
 };
 
 fetch(url, {

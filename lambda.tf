@@ -19,15 +19,29 @@ EOF
 
 resource "null_resource" "validate_python3" {
   provisioner "local-exec" {
-    command = "python3 -m py_compile lambda/function.py"
+    command = "python -m py_compile lambda/function.py"
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
   triggers = {
     python_file_hash = filesha256("lambda/function.py")
+    python_file_hash = filesha256("lambda/test_calc.py")
   }
 
 }
+
+resource "null_resource" "run_tests" {
+  provisioner "local-exec" {
+    command = "python -m unittest lambda/test_calc.py"
+    on_failure  = fail # Fail if the command returns a non-zero exit code
+  }
+
+  triggers = {
+    python_file_hash = filesha256("lambda/test_calc.py")
+  }
+
+}
+
 
 /*
 resource "null_resource" "lambda_sam_local" {
@@ -45,17 +59,16 @@ resource "null_resource" "lambda_sam_local" {
 
 # TODO: https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file
 resource "null_resource" "zip_lambda" {
-  depends_on = [null_resource.validate_python3, /*null_resource.lambda_sam_local*/]
+  depends_on = [null_resource.validate_python3, null_resource.run_tests]
   provisioner "local-exec" {
     command = "zip -j lambda_function_payload.zip lambda/*.py"
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
-
   triggers = {
     file_exists = fileexists("lambda_function_payload.zip")
-    file_sha256 = filesha256("lambda/function.py")
+    function_py_hash = filesha256("lambda/function.py")
+    testcalc_py_hash = filesha256("lambda/test_calc.py")
   }
-
 }
 
 resource "aws_lambda_function" "my_lambda" {
@@ -65,7 +78,7 @@ resource "aws_lambda_function" "my_lambda" {
   runtime       = "python3.11"
   role          = aws_iam_role.lambda_role.arn
   filename      = "lambda_function_payload.zip"
-  source_code_hash = filesha256("lambda/function.py")
+  #source_code_hash = filesha256("lambda_function_payload.zip")
 }
 
 resource "null_resource" "test_lambda" {
@@ -77,6 +90,7 @@ resource "null_resource" "test_lambda" {
   }
   triggers = {
     source_code_hash = filesha256("lambda/function.py")
+    test_hash = filesha256("lambda/test_calc.py")
     #always_run = "${timestamp()}"
   }
 }
