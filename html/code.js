@@ -25,8 +25,8 @@ console.log("shooting request @aws lambda: "+url)
 //console.log("Option:"+option)
 
 const data = {
-  p_1: document.getElementById('x').value,
-  p_2: document.getElementById('y').value,
+  x: document.getElementById('x').value,
+  y: document.getElementById('y').value,
   operation: document.getElementById('operator').value
 };
 

@@ -11,8 +11,8 @@ def lambda_handler(event, context):
     else:
         requestBody = event
         
-    x = int(requestBody.get('p_1', 0))
-    y = int(requestBody.get('p_2', 0))
+    x = int(requestBody.get('x', 0))
+    y = int(requestBody.get('y', 0))
     
     operation = requestBody.get('operation','add')
     
