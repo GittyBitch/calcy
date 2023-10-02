@@ -1,6 +1,9 @@
-import json
 
-# entry point
+import json
+from test_calc import calculate
+
+
+#  entry point 
 def lambda_handler(event, context):
     body = event.get('body')
     if body:
@@ -13,28 +16,8 @@ def lambda_handler(event, context):
     
     operation = requestBody.get('operation','add')
     
-    result = 0
-    status=200
-    match operation:
-        case 'add':
-            result = x + y
-        case 'subtract':
-            result = x -y 
-        case 'pow':
-            result = x**y
-        case 'mod':
-            result = x%y
-        case 'multiply':
-            result = x * y
-        case 'divide':
-            if (y == 0): 
-                result = "Division by Zero"
-            else:
-                result = x / y
-        case _:
-            result ="Unsupported operation:"+operation
-            status=501
-
+    (result, status) = calculate(operation,x,y)
+    
     return {
         'statusCode': status,
         'body': json.dumps(result)
