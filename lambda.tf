@@ -47,7 +47,7 @@ resource "null_resource" "lambda_sam_local" {
 resource "null_resource" "zip_lambda" {
   depends_on = [null_resource.validate_python3, /*null_resource.lambda_sam_local*/]
   provisioner "local-exec" {
-    command = "zip -j lambda_function_payload.zip lambda/function.py"
+    command = "zip -j lambda_function_payload.zip lambda/*.py"
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
@@ -77,7 +77,7 @@ resource "null_resource" "test_lambda" {
   }
   triggers = {
     source_code_hash = filesha256("lambda/function.py")
-    #  always_run = "${timestamp()}"
+    #always_run = "${timestamp()}"
   }
 }
 
