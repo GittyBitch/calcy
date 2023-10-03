@@ -6,10 +6,10 @@ FUNCTION_NAME = "calculator_lambda"
 INVOCATION_TYPE = "RequestResponse"
 EXPECTED_OUTPUT = b'{"statusCode": 200, "body": "330"}'
 
-with open("../test_payload.json", "r") as file:
+with open("test_payload.json", "r") as file:
     PAYLOAD = json.load(file)
 
-class LambdaTest(unittest.TestCase):
+class LambdaCalculatorTest(unittest.TestCase):
 
     def setUp(self):
         self.lambda_client = boto3.client('lambda')

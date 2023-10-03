@@ -19,7 +19,7 @@ EOF
 
 resource "null_resource" "validate_python3" {
   provisioner "local-exec" {
-    command = "python -m py_compile lambda/function.py"
+    command = "PYTHONPATH=lambda python -m py_compile lambda/function.py"
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
@@ -33,12 +33,13 @@ resource "null_resource" "validate_python3" {
 
 resource "null_resource" "run_tests" {
   provisioner "local-exec" {
-    command = "cd lambda && python -m unittest test_calc.py"
+    command = "PYTHONPATH=lambda python -m unittest lambda/test_calc.py && python -m unittest lambda/test_calc_remote.py"
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
   triggers = {
     python_file_hash = filesha256("lambda/test_calc.py")
+    remote_test_hash = filesha256("lambda/test_calc_remote.py")
     calculator_py_hash = filesha256("lambda/calculator.py")
   }
 
