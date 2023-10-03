@@ -4,7 +4,7 @@
 
 This repository demonstrates a simple proof-of-concept (PoC) calculator application deployed on AWS using Terraform. The calculator performs basic arithmetic operations like addition, subtraction, multiplication, and division. It leverages AWS Lambda for computation and AWS API Gateway for handling HTTP requests. The HTML frontend and JavaScript code are hosted on a public S3 bucket, providing a simple user interface to interact with the calculator.
 
-[Screen shot showing the HTML frontend](Screenshot.png)
+![Screen shot showing the HTML frontend](Screenshot.png)
 
 ## Prerequisites
 
