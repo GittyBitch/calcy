@@ -7,7 +7,8 @@ FAKE = "FAKEIT"
 
 def calculate(operation, x, y):
     status = HTTP_OK # HTTP Status
-    match operation:
+    
+    match operation.lower():
         case 'add':
             result = x + y
         case 'subtract':
