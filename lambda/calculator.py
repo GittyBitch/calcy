@@ -27,3 +27,4 @@ def calculate(operation, x, y):
             result =UNSUPPORTED+operation
             status=HTTP_ERROR
     return [result, status]
+

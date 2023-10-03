@@ -88,7 +88,7 @@ resource "null_resource" "test_lambda" {
   depends_on = [aws_lambda_function.my_lambda]
 
   provisioner "local-exec" {
-    command = "bash test_lambda.sh"
+    command = "bash test_lambda.sh" # FIXME
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
   triggers = {
@@ -109,6 +109,19 @@ resource "null_resource" "check_response" {
   triggers = {
     file_sha256 = filesha256("response.json")
     #always_run = "${timestamp()}"
+  }
+}
+
+resource "null_resource" "check_sam_response" {
+  depends_on = [null_resource.test_lambda]
+
+  provisioner "local-exec" {
+    command = "bash test_sam_local.sh"
+    on_failure  = fail # Fail if the command returns a non-zero exit code
+  }
+  triggers = {
+    #file_sha256 = filesha256("sam_response.json")
+    always_run = "${timestamp()}" # FIXME
   }
 }
 
