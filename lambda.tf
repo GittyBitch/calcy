@@ -25,19 +25,21 @@ resource "null_resource" "validate_python3" {
 
   triggers = {
     python_file_hash = filesha256("lambda/function.py")
-    python_file_hash = filesha256("lambda/test_calc.py")
+    calculator_py_hash = filesha256("lambda/calculator.py")
+    test_calc_hash = filesha256("lambda/test_calc.py")
   }
 
 }
 
 resource "null_resource" "run_tests" {
   provisioner "local-exec" {
-    command = "python -m unittest lambda/test_calc.py"
+    command = "cd lambda && python -m unittest test_calc.py"
     on_failure  = fail # Fail if the command returns a non-zero exit code
   }
 
   triggers = {
     python_file_hash = filesha256("lambda/test_calc.py")
+    calculator_py_hash = filesha256("lambda/calculator.py")
   }
 
 }
@@ -67,6 +69,7 @@ resource "null_resource" "zip_lambda" {
   triggers = {
     file_exists = fileexists("lambda_function_payload.zip")
     function_py_hash = filesha256("lambda/function.py")
+    calculator_py_hash = filesha256("lambda/calculator.py")
     testcalc_py_hash = filesha256("lambda/test_calc.py")
   }
 }
@@ -75,7 +78,7 @@ resource "aws_lambda_function" "my_lambda" {
   function_name = "calculator_lambda"
   depends_on    = [null_resource.zip_lambda]
   handler       = "function.lambda_handler"
-  runtime       = "python3.11"
+  runtime       = "python3.11" # match in function.py
   role          = aws_iam_role.lambda_role.arn
   filename      = "lambda_function_payload.zip"
   #source_code_hash = filesha256("lambda_function_payload.zip")
@@ -90,6 +93,7 @@ resource "null_resource" "test_lambda" {
   }
   triggers = {
     source_code_hash = filesha256("lambda/function.py")
+    calculator_py_hash = filesha256("lambda/calculator.py")
     test_hash = filesha256("lambda/test_calc.py")
     #always_run = "${timestamp()}"
   }

@@ -54,7 +54,8 @@ resource "null_resource" "test_endpoint" { # patch
   } # TODO: fail
 
   triggers = {
-    #file_sha256 = filesha256("lambda/function.py")
+    endpoint_url = aws_apigatewayv2_api.http_api.api_endpoint
+    file_sha256 = filesha256("lambda_function_payload.zip")
     api_gateway_id = "${aws_apigatewayv2_api.http_api.id}"
     #always_run = "${timestamp()}"
   }

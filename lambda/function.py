@@ -1,6 +1,6 @@
 
 import json
-from test_calc import calculate
+from calculator import calculate
 
 DEFAULT_OPERATION = 'add'
 DEFAULT_VALUE='1'

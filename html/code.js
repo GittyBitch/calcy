@@ -14,10 +14,10 @@ config.forEach(function(item) {
 
 formats = [
 	
-	{name:'DEC', value:'DEC'},
-	{name:'HEX', value:'HEX'},
-	{name:'BIN', value:'BIN'},
-	{name:'OCT', value:'OCT'}
+	{name:'Dezimal', value:'DEC'},
+	{name:'Hexadezimal', value:'HEX'},
+	{name:'Binaer', value:'BIN'},
+	{name:'Octadezimal', value:'OCT'}
 
 ];
 
