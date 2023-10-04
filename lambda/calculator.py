@@ -1,3 +1,7 @@
+import importlib.util
+#spec = importlib.util.find_spec('json')
+#print(spec.origin)
+
 
 # Globals
 HTTP_OK=200

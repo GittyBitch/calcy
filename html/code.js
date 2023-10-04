@@ -37,18 +37,39 @@ document.getElementById('Ergebnis').innerHTML="";
 document.getElementById('errors').innerHTML="";
 
 
-var url = document.getElementById('endpoint').value 
-console.log("shooting request @aws lambda: "+url)
+var url = document.getElementById('endpoint').value;
+console.log("shooting request @aws lambda: "+url);
 
-//var option = select.options[select.selectedIndex].text;;
-//console.log("Option:"+option)
+var select = document.getElementById('endpoint');
+var option = select.options[select.selectedIndex].text;
+console.log("Option:"+option)
 
-const data = {
-  x: document.getElementById('x').value,
-  y: document.getElementById('y').value,
-  operation: document.getElementById('operator').value,
+
+var keys=0;
+config.forEach(function(e) {
+if (e.name == option) keys = e.keys;
+});
+
+
+data = {
   format: document.getElementById('format').value
 };
+
+data[ keys[0] ] =  document.getElementById('x').value;
+data[ keys[1] ] =  document.getElementById('y').value;
+data[ keys[2] ] =  document.getElementById('operator').value;
+
+console.log("Format: "+ JSON.stringify(data));
+
+
+var enableCORS = document.getElementById('enable_cors');
+
+if(enableCORS.checked) {
+// Define the CORS proxy URL
+// https://nordicapis.com/10-free-to-use-cors-proxies/
+url = 'https://corsproxy.io/?' + encodeURIComponent(url);
+console.log("Using CORS Proxy:"+url);
+}
 
 fetch(url, {
     method: 'POST',
@@ -65,6 +86,6 @@ fetch(url, {
     }
     return response.json();
   })
-  .then(data => {document.getElementById('Ergebnis').innerHTML="= "+data;}) 
+  .then(data => {document.getElementById('Ergebnis').innerHTML="= "+ data;}) 
   .catch(error => {document.getElementById('errors').innerHTML=error+"&#128530;";});
 }
