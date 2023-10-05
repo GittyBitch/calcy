@@ -22,7 +22,7 @@ def calculate(operation, x, y):
         case 'mod':
             result = x%y
         case 'multiply':
-            result = x * y
+            result = x * y 
         case 'divide':
             if (y == 0): 
                 raise ZeroDivisionError
