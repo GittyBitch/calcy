@@ -18,19 +18,19 @@ def getVar(event, var, default):
         requestBody = json.loads(body)
     else:
         requestBody = event
-    return int(requestBody.get(var, default))
+    return requestBody.get(var, default)
     
 
 #  entry point 
 def lambda_handler(event, context):
-    x = getVar(event,'y',DEFAULT_VALUE)
-    y = getVar(event,'y',DEFAULT_VALUE)
-
+    x = int(getVar(event,'y',DEFAULT_VALUE))
+    y = int(getVar(event,'y',DEFAULT_VALUE))
+#FIXME:cast
 
     logger.info('Parameters: %s/%s', x, y)
     
-    operation = getVar('operation',DEFAULT_OPERATION)
-    output = getVar('format', DEFAULT_FORMAT)
+    operation = getVar(event,'operation',DEFAULT_OPERATION)
+    output = getVar(event,'format', DEFAULT_FORMAT)
 
     (result, status) = calculate(operation,x,y)
     logger.info('Result of %s %s %s = %s ', x, operation, y, result)
@@ -43,7 +43,7 @@ def lambda_handler(event, context):
         case 'OCT':
             result = oct(result)
         case _:
-            logger.info('Unknown Output Format requested:',operation)
+            logger.info('Unknown Output Format requested:'+operation)
 
 
     return {
